@@ -13,6 +13,10 @@ def bubble_sort(array)
   array
 end
 
+def bubble_sort_by
+  #todo implement part 2
+end
+
 p bubble_sort([2, 3, 4, 1, 2, 3, 4, 5])
 p bubble_sort([7, 6, 5, 4, 9, 3, 124, 75, 234, 754, 43, 63, 654])
 p bubble_sort([12, 4567, 23, 54643, 5643, 745, 43333333, 4775, 3543, 86778, 45646])
