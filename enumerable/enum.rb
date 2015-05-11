@@ -68,16 +68,32 @@ module Enumerable
     end
     count
   end
-  
-  def my_map
-    return self unless block_given?
-    arr=[]
-    self.my_each do |elem|
-      arr.push yield elem
+
+  def my_map(block = nil)
+    array = []
+    if block
+      self.my_each do |elem|
+        array << block.call(elem)
+      end
+      return array
+    else
+      return self
     end
-    arr
   end
 
+  def my_inject(num = nil)
+    acc = num.nil? ? self.first : num
+    for elem in self do
+      acc = yield(acc, elem)
+    end
+    acc
+  end
+
+end
+
+def multiply_els(arr = nil)
+  return 0 if arr.nil?
+  arr.my_inject(1) { |product, num| product * num }
 end
 
 array = [1, 2, 2, 2, 5, 6, 7]
@@ -97,3 +113,7 @@ p array.my_none? { |element| element.is_a? Integer }
 p array.my_count { |element| element.is_a? Integer }
 
 p array.my_map { |element| element += 2 }
+
+p array.my_inject { |product, elem| product * elem }
+
+p multiply_els([2, 4, 5])
