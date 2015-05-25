@@ -47,14 +47,13 @@ class TicTacToe
 
   def game_over?
     @wins.each do |win|
-      if win.all? { |tile| tile == 'X' }
+      if win.all? { |tile| @tiles[tile] == 'X' }
         return 'X'
-      elsif win.all? { |tile| tile == 'O' }
+      elsif win.all? { |tile| @tiles[tile] == 'O' }
         return 'O'
-      else
-        return ''
       end
     end
+    return ''
   end
   
   def board_full?
@@ -118,6 +117,5 @@ game.play!
 
 #### Notes
 # Make it so that you have one turn method and pass in a player object
-# Fix the game_over? method.... Should I take a different approach? 
 # Clean up the play method
 # Add a way to play against CPU?
