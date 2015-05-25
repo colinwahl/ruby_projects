@@ -10,32 +10,30 @@ class TicTacToe
 
   def initialize
     @tiles = {
-      'A1' => " ", 'A2' => " ", 'A3' => " ",
-      'B1' => " ", 'B2' => " ", 'B3' => " ",
-      'C1' => " ", 'C2' => " ", 'C3' => " "
+      1 => 1, 2 => 2, 3 => 3,
+      4 => 4, 5 => 5, 6 => 6,
+      7 => 7, 8 => 8, 9 => 9
     }
     
     @wins = [
-             [@tiles['A1'], @tiles['A2'], @tiles['A3']],
-             [@tiles['B1'], @tiles['B2'], @tiles['B3']],
-             [@tiles['C1'], @tiles['C2'], @tiles['C3']],
-             [@tiles['A1'], @tiles['B1'], @tiles['C1']],
-             [@tiles['A2'], @tiles['B2'], @tiles['C2']],
-             [@tiles['A3'], @tiles['B3'], @tiles['C3']],
-             [@tiles['A1'], @tiles['B2'], @tiles['C3']],
-             [@tiles['C1'], @tiles['B2'], @tiles['A3']]
+             [@tiles[1], @tiles[2], @tiles[3]],
+             [@tiles[4], @tiles[5], @tiles[6]],
+             [@tiles[7], @tiles[8], @tiles[9]],
+             [@tiles[1], @tiles[4], @tiles[7]],
+             [@tiles[2], @tiles[5], @tiles[8]],
+             [@tiles[3], @tiles[6], @tiles[9]],
+             [@tiles[1], @tiles[5], @tiles[9]],
+             [@tiles[7], @tiles[5], @tiles[3]]
             ]
+
     @player1 = Player.new('X')
     @player2 = Player.new('O')
   end
   
   def print_board
-    puts "||===============||"
-    puts "|| * | 1 | 2 | 3 ||"
-    puts "|| A | #{@tiles['A1']} | #{@tiles['A2']} | #{@tiles['A3']} ||"
-    puts "|| B | #{@tiles['B1']} | #{@tiles['B2']} | #{@tiles['B3']} ||"
-    puts "|| C | #{@tiles['C1']} | #{@tiles['C2']} | #{@tiles['C3']} ||"
-    puts "||===============||"
+    puts " #{@tiles[1]} | #{@tiles[2]} | #{@tiles[3]}"
+    puts " #{@tiles[4]} | #{@tiles[5]} | #{@tiles[6]}"
+    puts " #{@tiles[7]} | #{@tiles[8]} | #{@tiles[9]}"
   end
 
   def setup_two_player
@@ -53,20 +51,21 @@ class TicTacToe
         return 'X'
       elsif win.all? { |tile| tile == 'O' }
         return 'O'
+      else
+        return ''
       end
     end
-    return nil
   end
   
   def board_full?
-    @tiles.any? { |tile| tile == ' ' }
+    @tiles.values.all? { |tile| tile.is_a? String }
   end
 
   def player1_turn
     loop do 
       print "#{@player1.name}, enter an empty tile: "
-      tile = gets.chomp
-      if @tiles[tile] == ' '
+      tile = gets.chomp.to_i
+      if @tiles[tile].is_a? Integer and tile > 0 and tile < 10
         @tiles[tile] = 'X'
         break
       else
@@ -78,8 +77,8 @@ class TicTacToe
   def player2_turn
     loop do
       print "#{@player2.name}, enter an empty tile: "
-      tile = gets.chomp
-      if @tiles[tile] == ' '
+      tile = gets.chomp.to_i
+      if @tiles[tile].is_a? Integer and tile > 0 and tile < 10
         @tiles[tile] = 'O'
         break
       else
@@ -89,21 +88,23 @@ class TicTacToe
   end
 
   def play!
+    win = ''
     loop do 
       print_board
       player1_turn
       win = game_over?
-      break if board_full? or not win.nil?
+      break if board_full? or not win.empty?
       print_board
       player2_turn
       win = game_over?
-      break if board_full? or not win.nil?
+      break if board_full? or not win.empty?
     end
+    print_board
     if board_full? and win.empty?
       puts "Tie Game!"
-    elsif win == 'X'
+    elsif win == 'X' 
       puts "#{@player1.name} wins!"
-    else
+    elsif win == 'O'
       puts "#{@player2.name} wins!"
     end
   end
@@ -113,3 +114,10 @@ end
 game = TicTacToe.new
 game.setup_two_player
 game.play!
+
+
+#### Notes
+# Make it so that you have one turn method and pass in a player object
+# Fix the game_over? method.... Should I take a different approach? 
+# Clean up the play method
+# Add a way to play against CPU?
